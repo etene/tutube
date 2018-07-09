@@ -1,24 +1,21 @@
 #!/usr/bin/python3
 
 import fcntl
-
 import http.server
-from http import HTTPStatus
-from socketserver import ThreadingMixIn
-from os import unlink
-
-from wsgiref.util import FileWrapper
-from wsgiref.headers import Headers
+import logging
 import wsgiref.simple_server
-from contextlib import contextmanager
-from pathlib import Path
 
 from argparse import ArgumentParser
 from collections import namedtuple
+from contextlib import contextmanager
+from http import HTTPStatus
+from os import unlink
+from pathlib import Path
+from socketserver import ThreadingMixIn
+from wsgiref.headers import Headers
+from wsgiref.util import FileWrapper
 
-import logging
 import youtube_dl
-
 
 logging.basicConfig(level=logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s")

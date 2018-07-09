@@ -1,10 +1,11 @@
 import tempfile
-from os.path import split, join, exists
-from os import listdir
-import tutube
 import unittest
+
+from os import listdir, path
 from threading import Thread
 from time import sleep, time
+
+import tutube
 
 TEST_URL = "https://www.youtube.com/watch?v=C0DPdy98e4c"
 
@@ -27,7 +28,7 @@ class CachingDownloaderTests(unittest.TestCase):
             videopath = down.cache_dir / video.path
             self.assertTrue(videopath.exists())
             self.assertGreater(videopath.stat().st_size, 0)
-            videodir, videofile = split(videopath)
+            videodir, videofile = path.split(videopath)
             self.assertEqual(listdir(videodir), ["C0DPdy98e4c.mp3"])
 
 
@@ -35,10 +36,10 @@ class MiscTests(unittest.TestCase):
 
     def test_lock(self):
         with tempfile.TemporaryDirectory() as td:
-            lf = join(td, "lockity.lock")
+            lf = path.join(td, "lockity.lock")
             with tutube.lock(lf):
-                self.assertTrue(exists(lf))
-        self.assertFalse(exists(lf))
+                self.assertTrue(path.exists(lf))
+        self.assertFalse(path.exists(lf))
 
     @staticmethod
     def lock_for(lockfile, seconds):
@@ -48,7 +49,7 @@ class MiscTests(unittest.TestCase):
     def test_parallel_lock(self):
         lock_duration = 1
         with tempfile.TemporaryDirectory() as td:
-            lf = join(td, "lockity.lock")
+            lf = path.join(td, "lockity.lock")
             # Lock in the background for 2 seconds
             sleepthread = Thread(target=self.lock_for,
                                  args=[lf, lock_duration])
